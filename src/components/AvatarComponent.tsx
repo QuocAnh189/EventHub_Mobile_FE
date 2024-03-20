@@ -1,25 +1,25 @@
-import React from 'react';
-import { Image, ImageProps, StyleProp, TouchableOpacity, View } from 'react-native';
+import React from 'react'
+import { Image, ImageProps, StyleProp, TouchableOpacity, View } from 'react-native'
 
 //component
-import { TextComponent } from './TextComponent';
+import { TextComponent } from './TextComponent'
 
 //constant
-import { appColor, appFont } from '@/constants';
+import { appColor, appFont } from '@/constants'
 
 //
-import { global } from '@/styles/global';
+import { global } from '@/styles/global'
 
 interface Props {
-  photoURL?: string;
-  name: string;
-  size?: number;
-  styles?: StyleProp<ImageProps>;
-  onPress?: () => void;
+  photoURL?: string
+  name: string
+  size?: number
+  styles?: StyleProp<ImageProps>
+  onPress?: () => void
 }
 
 export const AvatarComponent = (props: Props) => {
-  const { photoURL, name, size, styles, onPress } = props;
+  const { photoURL, name, size, styles, onPress } = props
 
   return (
     <TouchableOpacity disabled={!onPress} onPress={onPress}>
@@ -60,5 +60,5 @@ export const AvatarComponent = (props: Props) => {
         </View>
       )}
     </TouchableOpacity>
-  );
-};
+  )
+}
