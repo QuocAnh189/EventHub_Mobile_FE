@@ -8,8 +8,7 @@ import { TextComponent } from './TextComponent'
 import { global } from '@/styles/global'
 
 //constant
-import { colors } from '../constants/colors'
-import { fontFamilies } from '../constants/fonts'
+import { appColor, appFont } from '@/constants'
 
 interface Props {
   disabled?: boolean
