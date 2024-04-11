@@ -23,6 +23,7 @@ interface Props {
   title?: string
   children: ReactNode
   back?: boolean
+  right?: ReactNode
 }
 
 export const ContainerComponent = (props: Props) => {

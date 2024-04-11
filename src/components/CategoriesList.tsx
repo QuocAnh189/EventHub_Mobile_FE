@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import { FlatList, Text } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 //component
 import { TagComponent } from './TagComponent'
@@ -27,6 +28,7 @@ interface Category {
 
 export const CategoriesList = (props: Props) => {
   const { isFill } = props
+  const navigation: any = useNavigation()
 
   const categories: Category[] = [
     {
@@ -68,7 +70,12 @@ export const CategoriesList = (props: Props) => {
             minWidth: 82,
           }}
           bgColor={isFill ? item.color : appColor.white}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate('CategoryDetailScreen', {
+              id: item.key,
+              title: item.label,
+            })
+          }}
           icon={item.icon}
           label={item.label}
         />

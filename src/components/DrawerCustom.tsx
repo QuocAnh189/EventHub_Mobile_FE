@@ -29,37 +29,37 @@ export const DrawerCustom = ({ navigation }: any) => {
   const color = appColor.gray
   const profileMenu = [
     {
-      key: 'Profile',
+      key: 'ProfileScreen',
       title: 'My Profile',
       icon: <AntDesign name="user" size={size} color={color} />,
     },
     {
-      key: 'Notification',
+      key: 'NotificationScreen',
       title: 'Notification',
       icon: <Feather name="message-circle" size={size} color={color} />,
     },
     {
-      key: 'Calendar',
+      key: 'CalendarScreen',
       title: 'Calendar',
       icon: <Feather name="calendar" size={size} color={color} />,
     },
     {
-      key: 'Bookmark',
+      key: 'BookmarkScreen',
       title: 'Bookmark',
       icon: <Feather name="bookmark" size={size} color={color} />,
     },
     {
-      key: 'Contact',
+      key: 'ContactScreen',
       title: 'Contact Us',
       icon: <Feather name="mail" size={size} color={color} />,
     },
     {
-      key: 'Setting',
+      key: 'SettingsScreen',
       title: 'Settings',
       icon: <Feather name="settings" size={size} color={color} />,
     },
     {
-      key: 'Help',
+      key: 'HelpFAQScreen',
       title: 'Help & FAQs',
       icon: <AntDesign name="questioncircleo" size={size} color={color} />,
     },

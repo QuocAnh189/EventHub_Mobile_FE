@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react'
+import { View, Text, TextInput, StyleSheet } from 'react-native'
 
 //component
 import {
@@ -9,65 +9,65 @@ import {
   SectionComponent,
   SpaceComponent,
   TextComponent,
-} from '../../components';
+} from '../../components'
 
 //constant
-import { global } from '../../styles/global';
-import { appColor, appFont } from '../../constants';
+import { global } from '../../styles/global'
+import { appColor, appFont } from '../../constants'
 
 //modal
-import { LoadingModal } from '../../modals';
+import { LoadingModal } from '../../modals'
 
 // import authenticationAPI from '../../apis/authApi';
 // import {useDispatch} from 'react-redux';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //icons
-import { ArrowRight } from 'iconsax-react-native';
+import { ArrowRight } from 'iconsax-react-native'
 
-const Verification = ({ navigation, route }: any) => {
+const VerificationScreen = ({ navigation, route }: any) => {
   // const { code, email, password, username } = route.params;
 
-  const [currentCode, setCurrentCode] = useState<string>('');
-  const [codeValues, setCodeValues] = useState<string[]>([]);
-  const [newCode, setNewCode] = useState('');
-  const [limit, setLimit] = useState(120);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const ref1 = useRef<any>();
-  const ref2 = useRef<any>();
-  const ref3 = useRef<any>();
-  const ref4 = useRef<any>();
+  const [currentCode, setCurrentCode] = useState<string>('')
+  const [codeValues, setCodeValues] = useState<string[]>([])
+  const [newCode, setNewCode] = useState('')
+  const [limit, setLimit] = useState(120)
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const ref1 = useRef<any>()
+  const ref2 = useRef<any>()
+  const ref3 = useRef<any>()
+  const ref4 = useRef<any>()
 
   // const dispatch = useDispatch();
 
   useEffect(() => {
-    ref1.current.focus();
-  }, []);
+    ref1.current.focus()
+  }, [])
 
   useEffect(() => {
     if (limit > 0) {
       const interval = setInterval(() => {
-        setLimit(limit => limit - 1);
-      }, 1000);
-      return () => clearInterval(interval);
+        setLimit(limit => limit - 1)
+      }, 1000)
+      return () => clearInterval(interval)
     }
-  }, [limit]);
+  }, [limit])
 
   useEffect(() => {
-    let item = ``;
+    let item = ``
 
-    codeValues.forEach(val => (item += val));
+    codeValues.forEach(val => (item += val))
 
-    setNewCode(item);
-  }, [codeValues]);
+    setNewCode(item)
+  }, [codeValues])
 
   const handleChangeCode = (val: string, index: number) => {
-    const data = [...codeValues];
-    data[index] = val;
+    const data = [...codeValues]
+    data[index] = val
 
-    setCodeValues(data);
-  };
+    setCodeValues(data)
+  }
 
   const handleResendVerification = async () => {
     // setCodeValues(['', '', '', '']);
@@ -88,7 +88,7 @@ const Verification = ({ navigation, route }: any) => {
     //   setIsLoading(false);
     //   console.log(`Can not send verification code ${error}`);
     // }
-  };
+  }
 
   const handleVerification = async () => {
     // if (limit > 0) {
@@ -118,8 +118,8 @@ const Verification = ({ navigation, route }: any) => {
     // } else {
     //   setErrorMessage('Time out verification code, please resend new code!!!');
     // }
-    navigation.navigate('ResetPassScreen');
-  };
+    navigation.navigate('ResetPassScreen')
+  }
 
   return (
     <ContainerComponent back isImageBackground isScroll>
@@ -139,8 +139,8 @@ const Verification = ({ navigation, route }: any) => {
             style={[styles.input]}
             maxLength={1}
             onChangeText={val => {
-              val.length > 0 && ref2.current.focus();
-              handleChangeCode(val, 0);
+              val.length > 0 && ref2.current.focus()
+              handleChangeCode(val, 0)
             }}
             // onChange={() => }
             placeholder="-"
@@ -150,8 +150,8 @@ const Verification = ({ navigation, route }: any) => {
             value={codeValues[1]}
             keyboardType="number-pad"
             onChangeText={val => {
-              handleChangeCode(val, 1);
-              val.length > 0 && ref3.current.focus();
+              handleChangeCode(val, 1)
+              val.length > 0 && ref3.current.focus()
             }}
             style={[styles.input]}
             maxLength={1}
@@ -162,8 +162,8 @@ const Verification = ({ navigation, route }: any) => {
             value={codeValues[2]}
             ref={ref3}
             onChangeText={val => {
-              handleChangeCode(val, 2);
-              val.length > 0 && ref4.current.focus();
+              handleChangeCode(val, 2)
+              val.length > 0 && ref4.current.focus()
             }}
             style={[styles.input]}
             maxLength={1}
@@ -174,7 +174,7 @@ const Verification = ({ navigation, route }: any) => {
             ref={ref4}
             value={codeValues[3]}
             onChangeText={val => {
-              handleChangeCode(val, 3);
+              handleChangeCode(val, 3)
             }}
             style={[styles.input]}
             maxLength={1}
@@ -184,7 +184,7 @@ const Verification = ({ navigation, route }: any) => {
       </SectionComponent>
       <SectionComponent styles={{ marginTop: 40 }}>
         <ButtonComponent
-          disabled={false}
+          disable={false}
           onPress={handleVerification}
           text="Continue"
           type="primary"
@@ -226,10 +226,10 @@ const Verification = ({ navigation, route }: any) => {
       </SectionComponent>
       <LoadingModal visible={isLoading} />
     </ContainerComponent>
-  );
-};
+  )
+}
 
-export default Verification;
+export default VerificationScreen
 
 const styles = StyleSheet.create({
   input: {
@@ -244,4 +244,4 @@ const styles = StyleSheet.create({
     fontFamily: appFont.bold,
     textAlign: 'center',
   },
-});
+})
