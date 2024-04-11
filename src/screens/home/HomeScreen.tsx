@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, ImageBackground, Platform, ScrollView, StatusBar, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { FlatList, ImageBackground, Platform, ScrollView, StatusBar, TouchableOpacity, View } from 'react-native'
 
 //component
 import {
@@ -12,28 +12,28 @@ import {
   TabBarComponent,
   TagComponent,
   TextComponent,
-} from '../../components';
+} from '../../components'
 
 // import GeoLocation from '@react-native-community/geolocation';
 
 //constant
-import { global } from '../../styles/global';
-import { appColor, appFont } from '../../constants';
+import { global } from '../../styles/global'
+import { appColor, appFont } from '../../constants'
 
 //interface
 // import { AddressModel } from '../../interfaces';
 
 //redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 
 //icons
-import { HambergerMenu, Notification, SearchNormal1, Sort } from 'iconsax-react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { HambergerMenu, Notification, SearchNormal1, Sort } from 'iconsax-react-native'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const HomeScreen = ({ navigation }: any) => {
-  const [currentLocation, setCurrentLocation] = useState();
+  const [currentLocation, setCurrentLocation] = useState()
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   // const auth = useSelector(authSelector);
 
@@ -50,10 +50,10 @@ const HomeScreen = ({ navigation }: any) => {
     //   () => {},
     //   () => {},
     // );
-  }, []);
+  }, [])
 
   const reverseGeoCode = async ({ lat, long }: { lat: number; long: number }) => {
-    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${long}&lang=vi-VI&apiKey=zCDIlA5ytRuEe3YS9YrJlzAGjTkxsy4S6mJtq7ZpkGU`;
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${long}&lang=vi-VI&apiKey=zCDIlA5ytRuEe3YS9YrJlzAGjTkxsy4S6mJtq7ZpkGU`
 
     // try {
     //   const res = await axios(api);
@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation }: any) => {
     // } catch (error) {
     //   console.log(error);
     // }
-  };
+  }
 
   const itemEvent = {
     title: 'International Band Music Concert',
@@ -81,7 +81,7 @@ const HomeScreen = ({ navigation }: any) => {
     startAt: Date.now(),
     endAt: Date.now(),
     date: Date.now(),
-  };
+  }
 
   return (
     <View style={[global.container]}>
@@ -119,7 +119,11 @@ const HomeScreen = ({ navigation }: any) => {
             </View>
 
             <CircleComponent color="#524CE0" size={36}>
-              <View>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('NotificationScreen')
+                }}
+              >
                 <Notification size={18} color={appColor.white} />
                 <View
                   style={{
@@ -134,7 +138,7 @@ const HomeScreen = ({ navigation }: any) => {
                     right: -2,
                   }}
                 />
-              </View>
+              </TouchableOpacity>
             </CircleComponent>
           </RowComponent>
           <SpaceComponent height={20} />
@@ -142,7 +146,7 @@ const HomeScreen = ({ navigation }: any) => {
             <RowComponent
               styles={{ flex: 1 }}
               onPress={() =>
-                navigation.navigate('SearchEvents', {
+                navigation.navigate('SearchEventsScreen', {
                   isFilter: false,
                 })
               }
@@ -161,7 +165,7 @@ const HomeScreen = ({ navigation }: any) => {
             <TagComponent
               bgColor={'#5D56F3'}
               onPress={() =>
-                navigation.navigate('SearchEvents', {
+                navigation.navigate('SearchEventsScreen', {
                   isFilter: true,
                 })
               }
@@ -189,7 +193,7 @@ const HomeScreen = ({ navigation }: any) => {
         ]}
       >
         <SectionComponent styles={{ paddingHorizontal: 0, paddingTop: 24 }}>
-          <TabBarComponent title="Upcoming Events" onPress={() => {}} />
+          <TabBarComponent title="Upcoming Events" onPress={() => navigation.navigate('ExploreEventsScreen')} />
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
@@ -236,7 +240,7 @@ const HomeScreen = ({ navigation }: any) => {
         </SectionComponent>
       </ScrollView>
     </View>
-  );
-};
+  )
+}
 
-export default HomeScreen;
+export default HomeScreen

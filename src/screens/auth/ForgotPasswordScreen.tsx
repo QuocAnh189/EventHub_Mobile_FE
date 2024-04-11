@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 //component
 import {
@@ -8,16 +8,16 @@ import {
   SectionComponent,
   SpaceComponent,
   TextComponent,
-} from '../../components';
+} from '../../components'
 
 //constant
-import { appColor } from '../../constants';
+import { appColor } from '../../constants'
 
 //icons
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const ForgotPasswordScreen = ({ navigation }: any) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('')
 
   return (
     <ContainerComponent back isImageBackground>
@@ -39,12 +39,12 @@ const ForgotPasswordScreen = ({ navigation }: any) => {
           icon={<AntDesign name="arrowright" size={20} color={appColor.white} />}
           iconFlex="right"
           onPress={() => {
-            navigation.navigate('VerifyScreen');
+            navigation.navigate('VerifyScreen')
           }}
         />
       </SectionComponent>
     </ContainerComponent>
-  );
-};
+  )
+}
 
-export default ForgotPasswordScreen;
+export default ForgotPasswordScreen

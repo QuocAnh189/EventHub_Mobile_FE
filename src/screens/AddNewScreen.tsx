@@ -264,7 +264,7 @@ const AddNewScreen = () => {
 
       <SectionComponent>
         <ButtonComponent
-          disabled={errorsMess.length > 0 ? true : false}
+          disable={errorsMess.length > 0 ? true : false}
           text="Add New"
           onPress={handleAddEvent}
           type="primary"

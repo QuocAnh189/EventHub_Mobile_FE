@@ -29,7 +29,7 @@ import HiddenBottomLayout from '../../layout/HideBottomLayout'
 //modal
 import { LoadingModal, ModalInvite } from '../../modals'
 
-const EventDetail = ({ navigation, route }: any) => {
+const EventDetailScreen = ({ navigation, route }: any) => {
   const [isVisibleModalInvite, setIsVisibleModalInvite] = useState(false)
   const { item }: { item: any } = route.params
 
@@ -217,7 +217,7 @@ const EventDetail = ({ navigation, route }: any) => {
           colors={['rgba(255, 255, 255, 0.7)', 'rgba(255, 255, 255, 1)']}
           style={{
             position: 'absolute',
-            bottom: 10,
+            bottom: 20,
             right: 0,
             left: 0,
             paddingHorizontal: 12,
@@ -253,4 +253,4 @@ const EventDetail = ({ navigation, route }: any) => {
   )
 }
 
-export default EventDetail
+export default EventDetailScreen

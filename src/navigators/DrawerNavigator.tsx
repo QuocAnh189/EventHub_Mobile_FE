@@ -1,23 +1,23 @@
-import React from 'react';
+import React from 'react'
 
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer'
 
 //components
-import { DrawerCustom } from '../components';
+import { DrawerCustom } from '../components'
 
 //navigator
-import TabNavigator from './TabNavigator';
+import TabNavigator from './TabNavigator'
 
 //screen
-import NotificationScreen from '../screens/others/NotificationScreen';
-import CalendarScreen from '../screens/others/CalendarScreen';
-import BookmarkScreen from '../screens/others/BookmarkScreen';
-import HelpFAQScreen from '../screens/others/HelpFAQScreen';
-import ContactSetting from '../screens/others/ContactUsScreen';
-import SettingsScreen from '../screens/others/SettingsScreen';
+import NotificationScreen from '../screens/NotificationScreen'
+import CalendarScreen from '../screens/drawer/CalendarScreen'
+import BookmarkScreen from '../screens/drawer/BookmarkScreen'
+import HelpFAQScreen from '../screens/drawer/HelpFAQScreen'
+import ContactScreen from '../screens/drawer/ContactUsScreen'
+import SettingsScreen from '../screens/drawer/SettingsScreen'
 
 const DrawerNavigator = () => {
-  const Drawer = createDrawerNavigator();
+  const Drawer = createDrawerNavigator()
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -27,14 +27,14 @@ const DrawerNavigator = () => {
       drawerContent={props => <DrawerCustom {...props} />}
     >
       <Drawer.Screen name="HomeNavigator" component={TabNavigator} />
-      <Drawer.Screen name="Notification" component={NotificationScreen} />
-      <Drawer.Screen name="Calendar" component={CalendarScreen} />
-      <Drawer.Screen name="Bookmark" component={BookmarkScreen} />
-      <Drawer.Screen name="Contact" component={ContactSetting} />
-      <Drawer.Screen name="Setting" component={SettingsScreen} />
-      <Drawer.Screen name="Help" component={HelpFAQScreen} />
+      <Drawer.Screen name="NotificationScreen" component={NotificationScreen} />
+      <Drawer.Screen name="CalendarScreen" component={CalendarScreen} />
+      <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
+      <Drawer.Screen name="ContactScreen" component={ContactScreen} />
+      <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
+      <Drawer.Screen name="HelpFAQScreen" component={HelpFAQScreen} />
     </Drawer.Navigator>
-  );
-};
+  )
+}
 
-export default DrawerNavigator;
+export default DrawerNavigator

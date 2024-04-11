@@ -1,13 +1,12 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 //screen
-import HomeScreen from '../screens/home/HomeScreen';
-import SearchEvents from '../screens/events/SearchEvents';
-import EventDetail from '../screens/events/EventDetail';
+import HomeScreen from '../screens/home/HomeScreen'
+import CategoryDetailScreen from '../screens/events/CategoryDetailScreen'
 
 const ExploreNavigator = () => {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator()
   return (
     <Stack.Navigator
       screenOptions={{
@@ -15,10 +14,9 @@ const ExploreNavigator = () => {
       }}
     >
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="SearchEvents" component={SearchEvents} />
-      <Stack.Screen name="EventDetail" component={EventDetail} />
+      <Stack.Screen name="CategoryDetailScreen" component={CategoryDetailScreen} />
     </Stack.Navigator>
-  );
-};
+  )
+}
 
-export default ExploreNavigator;
+export default ExploreNavigator
