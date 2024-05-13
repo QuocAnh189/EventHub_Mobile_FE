@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, ImageBackground, Platform, ScrollView, StatusBar, TouchableOpacity, View } from 'react-native'
 
 //component
@@ -29,9 +29,19 @@ import { useDispatch, useSelector } from 'react-redux'
 //icons
 import { HambergerMenu, Notification, SearchNormal1, Sort } from 'iconsax-react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { HttpTransportType, HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
+import { API } from '../../constants/api'
+import { Conversation, Message } from '../../interfaces/websockets'
+import { JoinChatRoomRequest, SendMessageRequest } from '../../types/conversation'
 
 const HomeScreen = ({ navigation }: any) => {
   const [currentLocation, setCurrentLocation] = useState()
+
+  const [conversation, setConversation] = useState<Conversation>()
+  const [messages, setMessages] = useState<Message[]>([])
+  const [connection, setConnection] = useState<HubConnection>()
+
+  const joinChatRoom = useRef<(() => Promise<void>) | null>(null)
 
   const dispatch = useDispatch()
 
@@ -82,6 +92,68 @@ const HomeScreen = ({ navigation }: any) => {
     endAt: Date.now(),
     date: Date.now(),
   }
+  useEffect(() => {
+    joinChatRoom.current = async () => {
+      try {
+        const conn = new HubConnectionBuilder()
+          .withUrl(`${API}/chat`)
+          .withAutomaticReconnect()
+          .configureLogging(LogLevel.Debug)
+          .build()
+
+        conn.on('JoinChatRoom', (conversation, message) => {
+          setConversation(conversation)
+          console.log('🚀 ~ conn.on ~ senderId:', conversation)
+          console.log('🚀 ~ conn.on ~ message:', message)
+        })
+
+        conn.on('ReceiveMessage', (message: Message) => {
+          console.log('🚀 ~ conn.on ~ message:', message)
+          setMessages(prevMessages => {
+            const cloneMessages = JSON.parse(JSON.stringify(prevMessages)) as Message[]
+            cloneMessages.push(message)
+            return cloneMessages
+          })
+        })
+
+        conn.on('TestConnection', (message: string) => {
+          console.log('🚀 ~ conn.on ~ message:', message)
+        })
+
+        conn.onclose(() => {
+          console.log('Close connection')
+        })
+
+        await conn.start()
+        await conn.invoke('TestConnection')
+        await conn.invoke('JoinChatRoom', {
+          eventId: 'ba831270-ef3a-49aa-8e87-bf014de374d5', // event: Ngày hội việc làm UIT
+          hostId: '6f6134ee-bf6f-4cad-83fd-bf944a468ca2', // host: Tran Phuoc Anh Quoc
+          userId: '20c024a1-8340-4ae6-9b7b-825e5788a08a', // user: Admin
+        } as JoinChatRoomRequest)
+
+        setConnection(conn)
+      } catch (error) {
+        console.log('🚀 ~ joinChatRoom ~ error:', error)
+      }
+    }
+    joinChatRoom.current()
+    ;() => joinChatRoom.current
+  }, [])
+
+  const sendMessage = async (message: string) => {
+    try {
+      await connection?.invoke('SendMessage', {
+        conversationId: conversation?.id,
+        userId: '20c024a1-8340-4ae6-9b7b-825e5788a08a',
+        content: message,
+      } as SendMessageRequest)
+    } catch (error) {
+      console.log('🚀 ~ sendMessage ~ error:', error)
+    }
+  }
+
+  // sendMessage('Hello there')
 
   return (
     <View style={[global.container]}>
