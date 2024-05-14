@@ -1,23 +1,25 @@
 export type SignInType = {
-  email: string;
-  password: string;
-};
+  identity: string
+  password: string
+}
 
 export const InitSignIn = {
-  email: '',
+  identity: '',
   password: '',
-} as SignInType;
+} as SignInType
 
 export type SignUpType = {
-  email: string;
-  fullname: string;
-  password: string;
-  confirmpassword: string;
-};
+  email: string
+  fullName: string
+  phoneNumber: string
+  password: string
+  confirmpassword: string
+}
 
 export const InitSignUp = {
   email: '',
-  fullname: '',
+  fullName: '',
+  phoneNumber: '',
   password: '',
   confirmpassword: '',
-} as SignUpType;
+} as SignUpType

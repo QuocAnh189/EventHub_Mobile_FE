@@ -11,9 +11,6 @@ import {
   SpaceComponent,
 } from '../../components'
 
-//model
-import { EventModel } from '../../models/EventModel'
-
 //const
 import { appColor } from '../../constants'
 
@@ -22,10 +19,7 @@ import { MoreCircle, SearchNormal1 } from 'iconsax-react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const ExploreEventsScreen = ({ navigation }: any) => {
-  // const [events, setEvents] = useState<EventModel[]>([])
   const [isLoading, setIsLoading] = useState(false)
-
-  const getEvents = async () => {}
 
   return (
     <ContainerComponent
@@ -43,7 +37,7 @@ const ExploreEventsScreen = ({ navigation }: any) => {
       }
     >
       {events.length > 0 ? (
-        <ListEventComponent items={events} />
+        <ListEventComponent events={events} />
       ) : (
         <LoadingComponent isLoading={isLoading} values={events.length} />
       )}

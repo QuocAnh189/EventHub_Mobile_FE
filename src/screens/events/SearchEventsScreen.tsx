@@ -4,7 +4,7 @@ import events from '../../data/event'
 
 //component
 import {
-  CircleComponent,
+  ButtonComponent,
   ContainerComponent,
   ListEventComponent,
   LoadingComponent,
@@ -26,18 +26,30 @@ import { SearchNormal1, Sort } from 'iconsax-react-native'
 
 // import {debounce} from 'lodash';
 
+//redux
+import { useGetEventsQuery } from '@/redux/services/eventApi'
+import { initParamsEvent } from '@/type/event'
+import { IEvent } from '@/interfaces/contents/event'
+
 const SearchEventsScreen = ({ navigation, route }: any) => {
-  // const [events, setEvents] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [size, setSize] = useState(12)
+  const [query, setQuery] = useState('')
+  const { data, isFetching, refetch } = useGetEventsQuery({ ...initParamsEvent, size, search: query })
+
   const [searchKey, setSearchKey] = useState('')
-  const [results, setResults] = useState<any[]>([])
-  const [isSearching, setIsSearching] = useState(false)
+  const [events, setEvents] = useState<IEvent[]>()
 
   const isFocused = useIsFocused()
 
   const getEvents = async () => {}
 
   const handleSearchEvent = async () => {}
+
+  useEffect(() => {
+    if (data) {
+      setEvents(data?.items)
+    }
+  }, [data])
 
   return (
     <ContainerComponent back title="Search">
@@ -69,22 +81,22 @@ const SearchEventsScreen = ({ navigation, route }: any) => {
           </RowComponent>
           <TagComponent
             bgColor={appColor.primary}
-            onPress={() => {}}
+            onPress={() => {
+              setQuery(searchKey)
+            }}
             label="Filters"
-            icon={
-              <CircleComponent size={20} color={appColor.white}>
-                <Sort size={16} color={appColor.primary} />
-              </CircleComponent>
-            }
           />
         </RowComponent>
       </SectionComponent>
 
-      {events.length > 0 ? (
-        <ListEventComponent items={events} />
+      {events?.length! > 0 ? (
+        <ListEventComponent events={events!} />
       ) : (
-        <LoadingComponent isLoading={isLoading} values={results.length} />
+        <LoadingComponent isLoading={isFetching} values={0} />
       )}
+      <View style={{ paddingHorizontal: 20 }}>
+        <ButtonComponent text="Load more" type="primary" onPress={() => setSize(pre => pre + 6)} />
+      </View>
     </ContainerComponent>
   )
 }

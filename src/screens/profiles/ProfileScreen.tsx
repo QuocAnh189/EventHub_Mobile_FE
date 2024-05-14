@@ -26,6 +26,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import InfoProfile from './components/InfoProfile'
 
+//redux
+import { useAppSelector } from '@/redux/hook'
+
 interface ButtonProps {
   title: string
   width: number
@@ -58,6 +61,8 @@ const ButtonProfile = (props: ButtonProps) => {
 
 const ProfileScreen = ({ navigation, route }: any) => {
   const [isLoading, setIsLoading] = useState(false)
+
+  const user = useAppSelector(state => state.user.user)
 
   useEffect(() => {
     navigation.getParent()?.setOptions({
@@ -96,22 +101,18 @@ const ProfileScreen = ({ navigation, route }: any) => {
           <>
             <SectionComponent styles={[global.center]}>
               <RowComponent>
-                <AvatarComponent
-                  photoURL="https://res.cloudinary.com/dadvtny30/image/upload/v1710062870/portfolio/frj9fscqteb90eumokqj.jpg"
-                  name="Anh Quoc"
-                  size={120}
-                />
+                <AvatarComponent photoURL={user?.avatar} name="Anh Quoc" size={120} />
               </RowComponent>
               <SpaceComponent height={16} />
-              <TextComponent text="Anh Quoc" title size={24} />
+              <TextComponent text={user?.fullName!} title size={24} />
               <SpaceComponent height={16} />
               <RowComponent justify="center">
                 <View style={[global.center, { flex: 1 }]}>
-                  <TextComponent title text={`350`} size={20} />
+                  <TextComponent title text={user?.numberOfFollowers || 0} size={20} />
                   <TextComponent text="Following" />
                 </View>
                 <View style={[global.center, { flex: 1 }]}>
-                  <TextComponent title text={`346`} size={20} />
+                  <TextComponent title text={user?.numberOfFolloweds || 0} size={20} />
                   <TextComponent text="Followers" />
                 </View>
               </RowComponent>

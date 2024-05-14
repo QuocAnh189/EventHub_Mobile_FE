@@ -1,26 +1,25 @@
-import { EventStatus } from 'interfaces/constants/enum'
-import { ICategory } from './category'
-import { IPriceRange } from 'interfaces/systems/price-range'
+import { EEventStatus } from '../../constants/enum'
+import { IPriceRange } from '../systems/price-range'
 
-export interface IEventDetail {
+export interface IEvent {
   id: string
   creatorId: string
-  creatorName: string
+  creator: any
   coverImageId: string
   coverImage: string
   name: string
-  descrption: string
-  locationId: string
-  locationString: string
+  description: string
+  location: string
   PriceRange: IPriceRange
-  startTime: Date
-  endTime: Date
-  categories: ICategory
+  startTime: any
+  endTime: any
+  ticketTypes: any
+  categories: string[]
   promotion: number
   numberOfFavourites: number
   numberOfShares: number
   numberOfSoldTickets: number
-  status: EventStatus
+  status: EEventStatus
   createdAt: Date
   updatedAt: Date
 }

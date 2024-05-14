@@ -13,6 +13,7 @@ import {
   TabBarComponent,
   TextComponent,
   TagComponent,
+  LoadingComponent,
 } from '../../components'
 
 //constant
@@ -28,10 +29,17 @@ import HiddenBottomLayout from '../../layout/HideBottomLayout'
 
 //modal
 import { LoadingModal, ModalInvite } from '../../modals'
+import { useGetEventByIdQuery } from '@/redux/services/eventApi'
 
 const EventDetailScreen = ({ navigation, route }: any) => {
   const [isVisibleModalInvite, setIsVisibleModalInvite] = useState(false)
-  const { item }: { item: any } = route.params
+  const { id }: { id: string } = route.params
+
+  const { data: event, isFetching } = useGetEventByIdQuery(id)
+
+  if (isFetching) {
+    ;<LoadingComponent isLoading={isFetching} />
+  }
 
   return (
     <HiddenBottomLayout navigation={navigation}>
@@ -78,8 +86,9 @@ const EventDetailScreen = ({ navigation, route }: any) => {
             source={require('../../assets/images/event-image.png')}
             style={{ width: appInfo.sizes.WIDTH, height: 240, resizeMode: 'cover' }}
           />
+
           <SectionComponent styles={{ marginTop: -20 }}>
-            {item.users.length > 0 ? (
+            {true ? (
               <View
                 style={{
                   justifyContent: 'center',
@@ -99,7 +108,7 @@ const EventDetailScreen = ({ navigation, route }: any) => {
                     },
                   ]}
                 >
-                  <AvatarGroup userIds={item.users} size={36} />
+                  {/* <AvatarGroup userIds={item.users} size={36} /> */}
                   <TouchableOpacity
                     onPress={() => setIsVisibleModalInvite(true)}
                     style={[global.button, { backgroundColor: appColor.primary, paddingVertical: 8 }]}
@@ -119,13 +128,14 @@ const EventDetailScreen = ({ navigation, route }: any) => {
               </>
             )}
           </SectionComponent>
+
           <View
             style={{
               backgroundColor: appColor.white,
             }}
           >
             <SectionComponent>
-              <TextComponent title size={34} font={appFont.medium} text={item.title} />
+              <TextComponent title size={34} font={appFont.medium} text={event?.name!} />
             </SectionComponent>
             <SectionComponent>
               <RowComponent styles={{ marginBottom: 20 }}>
@@ -163,11 +173,11 @@ const EventDetailScreen = ({ navigation, route }: any) => {
               {true && (
                 <RowComponent
                   styles={{ marginBottom: 20 }}
-                  onPress={() =>
-                    navigation.navigate('ProfileScreen', {
-                      id: item.authorId,
-                    })
-                  }
+                  // onPress={() =>
+                  //   navigation.navigate('ProfileScreen', {
+                  //     id: item.authorId,
+                  //   })
+                  // }
                 >
                   <Image
                     source={{
@@ -188,7 +198,7 @@ const EventDetailScreen = ({ navigation, route }: any) => {
                       justifyContent: 'space-around',
                     }}
                   >
-                    <TextComponent text="Anh Quoc" font={appFont.medium} size={16} />
+                    <TextComponent text={event?.creator?.userName!} font={appFont.medium} size={16} />
                     <TextComponent text="Personal" color={appColor.gray} />
                   </View>
 
@@ -207,7 +217,7 @@ const EventDetailScreen = ({ navigation, route }: any) => {
             </SectionComponent>
             <TabBarComponent title="About Event" />
             <SectionComponent>
-              <TextComponent text={item.description} />
+              <TextComponent text={event?.description!} />
             </SectionComponent>
           </View>
           <SpaceComponent height={80} />

@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Image, TouchableOpacity } from 'react-native'
 
 //swiper
 import Swiper from 'react-native-swiper'
 
 //style
-import { global } from '../../styles/global'
+import { global } from '@/styles/global'
 
 //component
-import { TextComponent } from '../../components'
+import { TextComponent } from '@/components'
 
 //constant
-import { appColor, appInfo, appFont } from '../../constants'
+import { appColor, appInfo, appFont } from '@/constants'
 
 const OnboardScreen = ({ navigation }: any) => {
   const [index, setIndex] = useState<number>(0)

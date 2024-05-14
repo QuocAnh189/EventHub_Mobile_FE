@@ -7,7 +7,7 @@ import { TextComponent } from './TextComponent'
 //constant
 import { appColor, appFont } from '@/constants'
 
-//
+//style
 import { global } from '@/styles/global'
 
 interface Props {

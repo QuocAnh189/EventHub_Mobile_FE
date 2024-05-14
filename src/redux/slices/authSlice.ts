@@ -1,45 +1,49 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 //interfaces
-import { IAuth } from '../../interfaces';
+import { IAuth } from '../../interfaces/systems/auth'
+import { IUser } from '@/interfaces/systems/user'
 
-//storage
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export const AuthSliceKey = 'auth';
+export const AuthSliceKey = 'auth'
 
 type InitialType = {
-  authData: IAuth | undefined;
-  isFirst: boolean;
-};
+  authData: IAuth | undefined
+  user: IUser | null
+  isFirst: boolean
+}
 
 const initialState = {
   authData: undefined,
-  isFirst: false,
-} as InitialType;
+  user: null,
+  // isFirst: false,
+} as InitialType
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     signIn: (state, action: PayloadAction<IAuth>) => {
-      state.isFirst = true;
-      state.authData = action.payload;
+      // state.isFirst = true
+      state.authData = action.payload
     },
 
     signUp: (state, action: PayloadAction<IAuth>) => {
-      state.authData = action.payload;
+      state.authData = action.payload
+    },
+
+    setUser: (state, action: PayloadAction<IUser | null>) => {
+      state.user = action.payload
     },
 
     signOut: state => {
-      state.isFirst = true;
-      state.authData = undefined;
+      // state.isFirst = true
+      state.authData = undefined
     },
   },
-});
+})
 
-export const { signUp, signIn, signOut } = authSlice.actions;
+export const { signUp, signIn, signOut, setUser } = authSlice.actions
 
-const authReducer = authSlice.reducer;
+const authReducer = authSlice.reducer
 
-export default authReducer;
+export default authReducer

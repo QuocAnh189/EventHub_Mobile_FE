@@ -17,10 +17,13 @@ import { ImageOrVideo } from 'react-native-image-crop-picker'
 //modal
 import { LoadingModal } from '../../modals'
 import { View } from 'react-native'
+import { useAppSelector } from '@/redux/hook'
 
 const EditProfileScreen = ({ navigation, route }: any) => {
   const [fileSelected, setFileSelected] = useState<any>()
   const [isLoading, setIsLoading] = useState(false)
+
+  const user = useAppSelector(state => state.user.user)
 
   const handleFileSelected = (val: ImageOrVideo) => {}
 
@@ -34,11 +37,7 @@ const EditProfileScreen = ({ navigation, route }: any) => {
     <ContainerComponent isScroll back title="Edit Profile">
       <SectionComponent>
         <RowComponent>
-          <AvatarComponent
-            photoURL="https://res.cloudinary.com/dadvtny30/image/upload/v1710062870/portfolio/frj9fscqteb90eumokqj.jpg"
-            name="Anh Quoc"
-            size={120}
-          />
+          <AvatarComponent photoURL={user?.avatar} name="Anh Quoc" size={120} />
         </RowComponent>
         <SpaceComponent height={16} />
         <RowComponent>
@@ -51,25 +50,25 @@ const EditProfileScreen = ({ navigation, route }: any) => {
         <InputComponent
           placeholder="Full name"
           allowClear
-          value="Anh Quoc"
+          value={user?.fullName!}
           onChange={val => handleChangeValue('name', val)}
         />
         <InputComponent
-          placeholder="Give name"
+          placeholder="User"
           allowClear
-          value="Anh Quoc"
+          value={user?.userName!}
           onChange={val => handleChangeValue('givenName', val)}
         />
         <InputComponent
-          placeholder="Family name"
+          placeholder="Email"
           allowClear
-          value="Anh Quoc"
+          value={user?.email!}
           onChange={val => handleChangeValue('familyName', val)}
         />
         <InputComponent
-          placeholder="Giới thiệu"
+          placeholder="Bio"
           allowClear
-          value="Hello every one, today i fell so good"
+          value={user?.bio!}
           multiline
           numberOfLine={5}
           onChange={val => handleChangeValue('bio', val)}

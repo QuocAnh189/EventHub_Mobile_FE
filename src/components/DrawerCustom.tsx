@@ -3,81 +3,33 @@ import { View, StyleSheet, Platform, StatusBar, TouchableOpacity, Image, FlatLis
 
 //components
 import { RowComponent } from './RowComponent'
-import { ButtonComponent } from './ButtonComponent'
 import { SpaceComponent } from './SpaceComponent'
 import { TextComponent } from './TextComponent'
 
 //icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Feather from 'react-native-vector-icons/Feather'
 
 //constant
 import { global } from '../styles/global'
-import { appColor } from '../constants'
+import { profileMenu } from '../constants'
 
 //redux
-import { useAppSelector } from '@/redux/hook'
-import { useAppDispatch } from '@/redux/hook'
-import { signOut } from '@/redux/slices/authSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/hook'
+import { useSignOutMutation } from '@/redux/services/authApi'
+import { setUser } from '@/redux/slices/userSlice'
 
 export const DrawerCustom = ({ navigation }: any) => {
   const dispatch = useAppDispatch()
-  const user = useAppSelector(state => state.auth.authData?.user)
 
-  const size = 20
-  const color = appColor.gray
-  const profileMenu = [
-    {
-      key: 'ProfileScreen',
-      title: 'My Profile',
-      icon: <AntDesign name="user" size={size} color={color} />,
-    },
-    {
-      key: 'NotificationScreen',
-      title: 'Notification',
-      icon: <Feather name="message-circle" size={size} color={color} />,
-    },
-    {
-      key: 'CalendarScreen',
-      title: 'Calendar',
-      icon: <Feather name="calendar" size={size} color={color} />,
-    },
-    {
-      key: 'BookmarkScreen',
-      title: 'Bookmark',
-      icon: <Feather name="bookmark" size={size} color={color} />,
-    },
-    {
-      key: 'ContactScreen',
-      title: 'Contact Us',
-      icon: <Feather name="mail" size={size} color={color} />,
-    },
-    {
-      key: 'SettingsScreen',
-      title: 'Settings',
-      icon: <Feather name="settings" size={size} color={color} />,
-    },
-    {
-      key: 'HelpFAQScreen',
-      title: 'Help & FAQs',
-      icon: <AntDesign name="questioncircleo" size={size} color={color} />,
-    },
-    {
-      key: 'SignOut',
-      title: 'Sign Out',
-      icon: <MaterialCommunityIcons name="logout" size={size} color={color} />,
-    },
-  ]
+  const user = useAppSelector(state => state.user.user)
+
+  const [signOut] = useSignOutMutation()
 
   const handleSignOut = async () => {
-    // const userId = auth?.user._id;
-    // await SignOut(userId)
-    //   .then(() => {
-    //     dispatch(signOut());
-    //   })
-    //   .catch(e => console.log(e));
-    dispatch(signOut())
+    const result = await signOut().unwrap()
+    if (result) {
+      dispatch(setUser(null))
+    }
   }
 
   const handleNavigate = (name: string) => {
@@ -97,7 +49,7 @@ export const DrawerCustom = ({ navigation }: any) => {
       >
         <Image
           source={{
-            uri: 'https://res.cloudinary.com/dadvtny30/image/upload/v1708676847/organicfood/blog/tr0qanq8r2gadkrxlymo.png',
+            uri: user?.avatar,
           }}
           style={styles.avatar}
         />

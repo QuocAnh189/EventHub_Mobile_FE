@@ -1,16 +1,16 @@
-import React from 'react';
+import React from 'react'
 
 //navigation
-import AuthNavigator from './AuthNavigator';
-import MainNavigator from './MainNavigator';
+import AuthNavigator from './AuthNavigator'
+import MainNavigator from './MainNavigator'
 
 //redux
-import { useAppSelector } from '../redux/hook';
+import { useAppSelector } from '../redux/hook'
 
 const AppRouters = () => {
-  const auth = useAppSelector(state => state.auth.authData);
+  const user = useAppSelector(state => state.user.user)
 
-  return <>{auth ? <MainNavigator /> : <AuthNavigator />}</>;
-};
+  return user ? <MainNavigator /> : <AuthNavigator />
+}
 
-export default AppRouters;
+export default AppRouters

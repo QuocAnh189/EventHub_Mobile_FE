@@ -7,11 +7,12 @@ import { TextComponent } from './TextComponent'
 //constant
 import { global } from '@/styles/global'
 import { appColor, appFont } from '@/constants'
+import { Image } from 'react-native'
 
 interface Props {
   onPress: () => void
   label: string
-  icon?: ReactNode
+  icon?: any
   textColor?: string
   bgColor?: string
   styles?: StyleProp<ViewStyle>
@@ -33,7 +34,7 @@ export const TagComponent = (props: Props) => {
         styles,
       ]}
     >
-      {icon && icon}
+      {icon ? <Image source={{ uri: icon }} width={10} height={10} /> : <></>}
       <TextComponent
         font={appFont.medium}
         text={label}

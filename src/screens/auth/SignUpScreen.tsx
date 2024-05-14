@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Image } from 'react-native'
 
 //component
 import {
@@ -10,14 +9,14 @@ import {
   SectionComponent,
   SpaceComponent,
   TextComponent,
-} from '../../components'
+} from '@/components'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 
 //modal
-import { LoadingModal } from '../../modals'
+import { LoadingModal } from '@/modals'
 
 //constant
-import { appColor, PASSWORD_REGEX } from '../../constants'
+import { appColor, PASSWORD_REGEX } from '@/constants'
 
 //storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -35,10 +34,12 @@ import { InitSignUp, SignUpType } from '../../types/auth'
 
 //redux
 import { useSignUpMutation } from '../../redux/services/authApi'
+import { useAppDispatch } from '@/redux/hook'
+import { setUser } from '@/redux/slices/userSlice'
 
 const formSchema = z
   .object({
-    fullname: z
+    fullName: z
       .string()
       .min(1, 'Họ tên không được để trống')
       .min(5, { message: 'Tên phải có ít nhất 5 kí tự' })
@@ -48,6 +49,10 @@ const formSchema = z
       .min(1, { message: 'Email không được để trống' })
       .max(30, { message: 'Email không được vượt quá 30 kí tự' })
       .email('Email không hợp lệ'),
+    phoneNumber: z
+      .string()
+      .min(1, { message: 'Phone không được để trống' })
+      .max(30, { message: 'Phone không được vượt quá 30 kí tự' }),
     password: z
       .string()
       .min(8, { message: 'Mật khẩu phải có ít nhất 8 kí tự' })
@@ -74,11 +79,11 @@ const InitErrorRegister = {
 }
 
 const SignUpScreen = ({ navigation }: any) => {
-  const [isShowPass, setIsShowPass] = useState(true)
-  const [isShowConfirmPass, setIsShowConfirmPass] = useState(true)
+  const dispatch = useAppDispatch()
+
   const [formError, setFormError] = useState(InitErrorRegister)
 
-  const [SignUp, { isLoading }] = useSignUpMutation()
+  const [signUp, { isLoading }] = useSignUpMutation()
   const {
     control,
     handleSubmit,
@@ -91,12 +96,13 @@ const SignUpScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     setFormError(InitErrorRegister)
-  }, [watch().email, watch().fullname, watch().password, watch().confirmpassword])
+  }, [watch().email, watch().fullName, watch().password, watch().confirmpassword])
 
-  const onSubmit: SubmitHandler<SignUpType> = async data => {
-    await SignUp(data)
-      .unwrap()
-      .then(res => {
+  const onSubmit: SubmitHandler<SignUpType> = async (data: any) => {
+    try {
+      const result: any = await signUp(data).unwrap()
+
+      if (result) {
         Toast.show({
           type: 'success',
           text1: 'Register',
@@ -104,58 +110,43 @@ const SignUpScreen = ({ navigation }: any) => {
           visibilityTime: 2500,
           topOffset: 60,
         })
-      })
-      .catch(e => {
-        const { message }: any = e.data
-        switch (message) {
-          case 'This email already exists':
-            setFormError(() => {
-              var newError = { ...InitErrorRegister, email: true }
-              return newError
-            })
-            break
-          case 'This name already exists':
-            setFormError(() => {
-              var newError = { ...InitErrorRegister, fullname: true }
-              return newError
-            })
-            break
-          case 'Confirmpassword is not match':
-            setFormError(() => {
-              var newError = { ...InitErrorRegister, confirmpassword: true }
-              return newError
-            })
-            break
-          default:
-            break
-        }
-      })
+        dispatch(signUp(result))
+        const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL!}/auth/profile`, {
+          headers: { Authorization: `Bearer ${result.accessToken}` },
+        })
+        const user = await response.json()
+        dispatch(setUser(user.data))
+      }
+    } catch (error: any) {
+      console.log(error)
+      const message = error.message
+      switch (message) {
+        case 'Email already exists':
+          setFormError(() => {
+            var newError = { ...InitErrorRegister, email: true }
+            return newError
+          })
+          break
+        case 'Phone number already exists':
+          setFormError(() => {
+            var newError = { ...InitErrorRegister, fullname: true }
+            return newError
+          })
+          break
+        default:
+          break
+      }
+    }
   }
 
   return (
     <>
       <ContainerComponent isImageBackground isScroll back>
-        {/* <SectionComponent
-          styles={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 20,
-          }}
-        >
-          <Image
-            source={require('../../assets/images/text-logo.png')}
-            style={{
-              width: 162,
-              height: 114,
-              marginBottom: 30,
-            }}
-          />
-        </SectionComponent> */}
         <SectionComponent>
           <TextComponent size={24} title text="Sign up" />
           <SpaceComponent height={21} />
           <Controller
-            name="fullname"
+            name="fullName"
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
@@ -168,9 +159,9 @@ const SignUpScreen = ({ navigation }: any) => {
               />
             )}
           />
-          {errors?.fullname && (
+          {errors?.fullName && (
             <SectionComponent>
-              <TextComponent text={errors?.fullname.message!} color={appColor.danger} />
+              <TextComponent text={errors?.fullName.message!} color={appColor.danger} />
             </SectionComponent>
           )}
           {formError.fullname && (
@@ -202,6 +193,22 @@ const SignUpScreen = ({ navigation }: any) => {
               <TextComponent text="Email already exists" color={appColor.danger} />
             </SectionComponent>
           )}
+
+          <Controller
+            name="phoneNumber"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <InputComponent
+                value={value}
+                placeholder="Phone Number"
+                onChange={onChange}
+                allowClear
+                affix={<AntDesign name="phone" size={20} color={appColor.gray} />}
+              />
+            )}
+          />
+
           <Controller
             name="password"
             control={control}
@@ -209,8 +216,6 @@ const SignUpScreen = ({ navigation }: any) => {
             render={({ field: { onChange, value } }) => (
               <InputComponent
                 isPassword={true}
-                // isShowPass={isShowPass}
-                // setIsShowPass={setIsShowPass}
                 value={value}
                 placeholder="Password"
                 onChange={onChange}
@@ -231,8 +236,6 @@ const SignUpScreen = ({ navigation }: any) => {
             render={({ field: { onChange, value } }) => (
               <InputComponent
                 isPassword={true}
-                // isShowPass={isShowConfirmPass}
-                // setIsShowPass={setIsShowConfirmPass}
                 value={value}
                 placeholder="Confirm Password"
                 onChange={onChange}

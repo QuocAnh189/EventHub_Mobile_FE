@@ -12,6 +12,5 @@ export interface LayoutProps {
 }
 
 export interface NextPageWithLayout {
-  // eslint-disable-next-line no-unused-vars
   Layout?: (props: LayoutProps) => ReactElement
 }

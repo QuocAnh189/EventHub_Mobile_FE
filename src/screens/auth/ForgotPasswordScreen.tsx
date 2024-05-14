@@ -8,10 +8,10 @@ import {
   SectionComponent,
   SpaceComponent,
   TextComponent,
-} from '../../components'
+} from '@/components'
 
 //constant
-import { appColor } from '../../constants'
+import { appColor } from '@/constants'
 
 //icons
 import AntDesign from 'react-native-vector-icons/AntDesign'

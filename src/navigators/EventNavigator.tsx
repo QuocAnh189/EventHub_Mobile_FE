@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 //screen
 import EventsScreen from '../screens/events/EventsScreenScreen'
+import SearchEventsScreen from '../screens/events/SearchEventsScreen'
 
 const EventNavigator = () => {
   const Stack = createNativeStackNavigator()
@@ -12,7 +13,7 @@ const EventNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="EventsScreen" component={EventsScreen} />
+      <Stack.Screen name="EventsScreen" component={SearchEventsScreen} />
     </Stack.Navigator>
   )
 }

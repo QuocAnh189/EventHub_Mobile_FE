@@ -1,27 +1,21 @@
 import React from 'react'
-import { FlatList, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 
 //component
-import { EventModel } from '../models/EventModel'
 import { EventItem } from './EventItem'
+import { IEvent } from '@/interfaces/contents/event'
 
 interface Props {
-  items: any[]
+  events: IEvent[]
 }
 
 export const ListEventComponent = (props: Props) => {
-  const { items } = props
+  const { events } = props
+
   return (
-    // <FlatList
-    //   data={items}
-    //   renderItem={({ item }) => (
-    //     <EventItem item={item} key={item?._id} type="list" styles={{ flex: 1, width: undefined }} />
-    //   )}
-    // />
     <ScrollView>
-      {/* Other components */}
-      {items.map(item => (
-        <EventItem item={item} key={item?._id} type="list" styles={{ flex: 1, width: undefined }} />
+      {events.map((event: IEvent, index: number) => (
+        <EventItem event={event} key={`ticket-${index}`} type="list" styles={{ flex: 1, width: undefined }} />
       ))}
     </ScrollView>
   )

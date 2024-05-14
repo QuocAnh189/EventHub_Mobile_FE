@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 //component
 import {
@@ -8,16 +8,16 @@ import {
   SectionComponent,
   SpaceComponent,
   TextComponent,
-} from '../../components';
+} from '@/components'
 
 //constant
-import { appColor } from '../../constants';
+import { appColor } from '@/constants'
 
 //icons
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const ResetPassScreen = ({ navigation }: any) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('')
 
   return (
     <ContainerComponent back isImageBackground>
@@ -54,7 +54,7 @@ const ResetPassScreen = ({ navigation }: any) => {
         />
       </SectionComponent>
     </ContainerComponent>
-  );
-};
+  )
+}
 
-export default ResetPassScreen;
+export default ResetPassScreen

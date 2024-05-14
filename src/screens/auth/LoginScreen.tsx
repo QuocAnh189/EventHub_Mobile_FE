@@ -12,12 +12,10 @@ import {
   TextComponent,
 } from '../../components'
 import SocialLogin from './components/SocialLogin'
+import { Toast } from 'react-native-toast-message/lib/src/Toast'
 
 //constant
 import { appColor, appFont } from '../../constants'
-
-//interface
-// import { IAuth } from '../../interfaces';
 
 //icon
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -35,12 +33,13 @@ import { LoadingModal } from '../../modals'
 
 //redux
 import { useSignInMutation } from '../../redux/services/authApi'
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { useAppDispatch } from '../../redux/hook'
 import { signIn } from '../../redux/slices/authSlice'
+import { useAppDispatch } from '../../redux/hook'
+import { setUser } from '../../redux/slices/userSlice'
+import { IAuth } from '@/interfaces/systems/auth'
 
 const formSchema = z.object({
-  email: z.string().min(1, 'Bạn chưa nhập email'),
+  identity: z.string().min(1, 'Bạn chưa nhập email'),
   password: z.string().min(1, 'Bạn chưa nhập mật khẩu'),
 })
 
@@ -52,11 +51,12 @@ const InitErrorLogin = {
 
 const LoginScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch()
+
   const [isRemember, setIsRemember] = useState<boolean>()
-  const [isShowPass, setIsShowPass] = useState(true)
   const [formError, setFormError] = useState(InitErrorLogin)
 
-  const [SignIn, { isLoading }] = useSignInMutation()
+  const [logIn, { isLoading }] = useSignInMutation()
+
   const {
     control,
     handleSubmit,
@@ -69,45 +69,37 @@ const LoginScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     setFormError(InitErrorLogin)
-  }, [watch().email, watch().password])
+  }, [watch().identity, watch().password])
 
-  const onSubmit: SubmitHandler<SignInType> = async data => {
-    const mockData: any = {
-      user: { image: '', fullname: 'haha', email: 'anhquoc18092003@gmailcom' },
-      accessToken: '123',
-      refreshToken: '123',
+  const onSubmit: SubmitHandler<SignInType> = async (data: any) => {
+    try {
+      const result: IAuth = await logIn(data).unwrap()
+      if (result) {
+        dispatch(signIn(result))
+
+        const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL!}/auth/profile`, {
+          headers: { Authorization: `Bearer ${result.accessToken}` },
+        })
+
+        const user = await response.json()
+        dispatch(setUser(user.data))
+      }
+    } catch (error: any) {
+      const message = error.message
+      switch (message) {
+        case 'Invalid credentials':
+          Toast.show({
+            type: 'error',
+            text1: 'Login Failure',
+            text2: 'Invalid credentials!',
+            visibilityTime: 2500,
+            topOffset: 60,
+          })
+          break
+        default:
+          break
+      }
     }
-    dispatch(signIn(mockData))
-    // await SignIn(data)
-    //   .unwrap()
-    //   .then(res => {
-    //     dispatch(signIn(res));
-    //   })
-    //   .catch((e: FetchBaseQueryError) => {
-    //     const { message }: any = e.data;
-    //     switch (message) {
-    //       case 'This email was not found':
-    //         setFormError(() => {
-    //           var newError = { ...InitErrorLogin, email: true };
-    //           return newError;
-    //         });
-    //         break;
-    //       case 'Password not matching':
-    //         setFormError(() => {
-    //           var newError = { ...InitErrorLogin, password: true };
-    //           return newError;
-    //         });
-    //         break;
-    //       case 'This user was disabled':
-    //         setFormError(() => {
-    //           var newError = { ...InitErrorLogin, authAccount: true };
-    //           return newError;
-    //         });
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    //   });
   }
 
   return (
@@ -133,22 +125,22 @@ const LoginScreen = ({ navigation }: any) => {
           <TextComponent size={24} title text="Sign in" />
           <SpaceComponent height={21} />
           <Controller
-            name="email"
+            name="identity"
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <InputComponent
                 value={value}
-                placeholder="Email"
+                placeholder="Email or Username"
                 onChange={onChange}
                 allowClear
                 affix={<AntDesign name="mail" size={20} color={appColor.gray} />}
               />
             )}
           />
-          {errors?.email && (
+          {errors?.identity && (
             <SectionComponent>
-              <TextComponent text={errors?.email.message!} color={appColor.danger} />
+              <TextComponent text={errors?.identity.message!} color={appColor.danger} />
             </SectionComponent>
           )}
           {formError.email && (
@@ -163,8 +155,6 @@ const LoginScreen = ({ navigation }: any) => {
             render={({ field: { onChange, value } }) => (
               <InputComponent
                 isPassword={true}
-                // isShowPass={isShowPass!}
-                // setIsShowPass={setIsShowPass}
                 value={value}
                 placeholder="Password"
                 onChange={onChange}
@@ -215,6 +205,7 @@ const LoginScreen = ({ navigation }: any) => {
         </SectionComponent>
       </ContainerComponent>
       <LoadingModal visible={isLoading} />
+      <Toast />
     </>
   )
 }

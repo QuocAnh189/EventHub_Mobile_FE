@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, ImageBackground, Platform, ScrollView, StatusBar, TouchableOpacity, View } from 'react-native'
+//hook
+import React from 'react'
 
 //component
+import { FlatList, ImageBackground, Platform, ScrollView, StatusBar, TouchableOpacity, View } from 'react-native'
 import {
   CategoriesList,
   CircleComponent,
@@ -14,58 +15,23 @@ import {
   TextComponent,
 } from '../../components'
 
-// import GeoLocation from '@react-native-community/geolocation';
-
 //constant
 import { global } from '../../styles/global'
 import { appColor, appFont } from '../../constants'
 
-//interface
-// import { AddressModel } from '../../interfaces';
-
 //redux
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '@/redux/hook'
 
 //icons
 import { HambergerMenu, Notification, SearchNormal1, Sort } from 'iconsax-react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { useGetEventsQuery } from '@/redux/services/eventApi'
+import { EEventStatus } from '../../constants'
 
 const HomeScreen = ({ navigation }: any) => {
-  const [currentLocation, setCurrentLocation] = useState()
+  const dispatch = useAppDispatch()
 
-  const dispatch = useDispatch()
-
-  // const auth = useSelector(authSelector);
-
-  useEffect(() => {
-    // GeoLocation.getCurrentPosition(
-    //   position => {
-    //     if (position.coords) {
-    //       reverseGeoCode({
-    //         lat: position.coords.latitude,
-    //         long: position.coords.longitude,
-    //       });
-    //     }
-    //   },
-    //   () => {},
-    //   () => {},
-    // );
-  }, [])
-
-  const reverseGeoCode = async ({ lat, long }: { lat: number; long: number }) => {
-    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${long}&lang=vi-VI&apiKey=zCDIlA5ytRuEe3YS9YrJlzAGjTkxsy4S6mJtq7ZpkGU`
-
-    // try {
-    //   const res = await axios(api);
-
-    //   if (res && res.status === 200 && res.data) {
-    //     const items = res.data.items;
-    //     setCurrentLocation(items[0]);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  }
+  const { data: events } = useGetEventsQuery({ takeAll: false, type: EEventStatus.UPCOMING, size: 6 })
 
   const itemEvent = {
     title: 'International Band Music Concert',
@@ -86,7 +52,6 @@ const HomeScreen = ({ navigation }: any) => {
   return (
     <View style={[global.container]}>
       <StatusBar barStyle={'light-content'} />
-
       <View
         style={{
           backgroundColor: appColor.primary,
@@ -107,14 +72,7 @@ const HomeScreen = ({ navigation }: any) => {
                 <MaterialIcons name="arrow-drop-down" size={18} color={appColor.white} />
               </RowComponent>
               {true && (
-                <TextComponent
-                  // text={`${currentLocation.address.city}, ${currentLocation.address.county}`}
-                  text="New York, USA"
-                  flex={0}
-                  color={appColor.white}
-                  font={appFont.medium}
-                  size={16}
-                />
+                <TextComponent text="UIT, VietNam" flex={0} color={appColor.white} font={appFont.medium} size={16} />
               )}
             </View>
 
@@ -170,19 +128,15 @@ const HomeScreen = ({ navigation }: any) => {
                 })
               }
               label="Filters"
-              icon={
-                <CircleComponent size={20} color="#B1AEFA">
-                  <Sort size={16} color="#5D56F3" />
-                </CircleComponent>
-              }
             />
           </RowComponent>
           <SpaceComponent height={20} />
         </View>
         <View style={{ marginBottom: -16 }}>
-          <CategoriesList isFill />
+          <CategoriesList isFill={true} />
         </View>
       </View>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={[
@@ -193,12 +147,12 @@ const HomeScreen = ({ navigation }: any) => {
         ]}
       >
         <SectionComponent styles={{ paddingHorizontal: 0, paddingTop: 24 }}>
-          <TabBarComponent title="Upcoming Events" onPress={() => navigation.navigate('ExploreEventsScreen')} />
+          <TabBarComponent title="Best Events For You" onPress={() => navigation.navigate('ExploreEventsScreen')} />
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={Array.from({ length: 5 })}
-            renderItem={({ item, index }) => <EventItem key={`event${index}`} item={itemEvent} type="card" />}
+            data={events?.items}
+            renderItem={({ item, index }) => <EventItem key={`event-${index}`} event={item} type="card" />}
           />
         </SectionComponent>
         <SectionComponent>
@@ -230,12 +184,12 @@ const HomeScreen = ({ navigation }: any) => {
           </ImageBackground>
         </SectionComponent>
         <SectionComponent styles={{ paddingHorizontal: 0, paddingTop: 24 }}>
-          <TabBarComponent title="Nearby You" onPress={() => {}} />
+          <TabBarComponent title="Upcoming Events" onPress={() => {}} />
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={Array.from({ length: 5 })}
-            renderItem={({ item, index }) => <EventItem key={`event${index}`} item={itemEvent} type="card" />}
+            data={events?.items}
+            renderItem={({ item, index }) => <EventItem key={`event-${index}`} event={item} type="card" />}
           />
         </SectionComponent>
       </ScrollView>

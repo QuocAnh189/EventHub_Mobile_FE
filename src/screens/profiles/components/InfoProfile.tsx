@@ -11,6 +11,8 @@ import { appColor, appFont } from '../../../constants'
 
 //modal
 import { LoadingModal } from '../../../modals'
+import EventProfile from './EventPofile'
+import ReviewProfile from './ReviewProfile'
 
 interface Props {}
 
@@ -41,8 +43,14 @@ const InfoProfile = (props: Props) => {
         content = <AboutProfile />
         break
 
+      case 'events':
+        content = <EventProfile />
+        break
+
+      case 'reviews':
+        content = <ReviewProfile />
+        break
       default:
-        content = <></>
         break
     }
     return content

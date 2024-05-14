@@ -6,7 +6,7 @@ import { global } from '@/styles/global'
 import { appColor, appFont } from '@/constants'
 
 interface Props {
-  text: string
+  text: string | number
   color?: string
   size?: number
   flex?: number

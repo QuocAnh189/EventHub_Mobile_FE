@@ -21,15 +21,19 @@ import { appColor, appInfo, appFont } from '@/constants'
 //icons
 import { Location } from 'iconsax-react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { IEvent } from '@/interfaces/contents/event'
+
+//util
+import dayjs from 'dayjs'
 
 interface Props {
-  item: any
+  event: IEvent
   type: 'card' | 'list'
   styles?: StyleProp<ViewStyle>
 }
 
 export const EventItem = (props: Props) => {
-  const { item, type, styles } = props
+  const { event, type, styles } = props
 
   const navigation: any = useNavigation()
 
@@ -37,13 +41,13 @@ export const EventItem = (props: Props) => {
     <CardComponent
       isShadow
       styles={[{ width: appInfo.sizes.WIDTH * 0.7 }, styles]}
-      onPress={() => navigation.navigate('EventDetailScreen', { item })}
+      onPress={() => navigation.navigate('EventDetailScreen', { id: event.id })}
     >
       {type === 'card' ? (
         <>
           <ImageBackground
-            style={{ flex: 1, marginBottom: 12, height: 131, padding: 10 }}
-            source={require('@/assets/images/event-image.png')}
+            style={{ flex: 1, marginBottom: 12, height: 130, padding: 10 }}
+            source={{ uri: event?.coverImage }}
             imageStyle={{
               resizeMode: 'cover',
               borderRadius: 12,
@@ -59,21 +63,21 @@ export const EventItem = (props: Props) => {
               </CardComponent>
             </RowComponent>
           </ImageBackground>
-          <TextComponent numOfLine={1} text={item.title} title size={18} />
+          <TextComponent numOfLine={1} text={event.name} title size={18} />
           <AvatarGroup />
           <RowComponent>
             <Location size={18} color={appColor.text3} variant="Bold" />
             <SpaceComponent width={8} />
-            <TextComponent flex={1} numOfLine={1} text={item.location.address} size={12} color={appColor.text2} />
+            <TextComponent flex={1} numOfLine={1} text={event.location} size={12} color={appColor.text2} />
           </RowComponent>
         </>
       ) : (
         <>
           <RowComponent>
             <Image
-              source={require('@/assets/images/event-image.png')}
+              source={{ uri: event.coverImage }}
               style={{
-                width: 79,
+                width: 100,
                 height: 92,
                 borderRadius: 12,
                 resizeMode: 'cover',
@@ -84,20 +88,18 @@ export const EventItem = (props: Props) => {
               style={{
                 flex: 1,
                 alignItems: 'stretch',
+                gap: 4,
               }}
             >
-              <TextComponent color={appColor.primary} text="Fri,App 23  6:00PM" />
-              <TextComponent text={item.title} title size={18} numOfLine={2} />
+              <TextComponent
+                color={appColor.primary}
+                text={dayjs(event.startTime).format('DD/MM/YYYY hh:mm A').toString()}
+              />
+              <TextComponent text={event.name} title size={18} numOfLine={2} />
               <RowComponent>
                 <Location size={18} color={appColor.text3} variant="Bold" />
                 <SpaceComponent width={8} />
-                <TextComponent
-                  flex={1}
-                  numOfLine={1}
-                  text="36 Thu Duc HoChiMinh City"
-                  size={12}
-                  color={appColor.text2}
-                />
+                <TextComponent flex={1} numOfLine={1} text={event.location} size={12} color={appColor.text2} />
               </RowComponent>
             </View>
           </RowComponent>

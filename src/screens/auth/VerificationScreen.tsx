@@ -9,14 +9,14 @@ import {
   SectionComponent,
   SpaceComponent,
   TextComponent,
-} from '../../components'
+} from '@/components'
 
 //constant
-import { global } from '../../styles/global'
-import { appColor, appFont } from '../../constants'
+import { global } from '@/styles/global'
+import { appColor, appFont } from '@/constants'
 
 //modal
-import { LoadingModal } from '../../modals'
+import { LoadingModal } from '@/modals'
 
 // import authenticationAPI from '../../apis/authApi';
 // import {useDispatch} from 'react-redux';
@@ -184,7 +184,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
       </SectionComponent>
       <SectionComponent styles={{ marginTop: 40 }}>
         <ButtonComponent
-          disable={false}
+          disabled={false}
           onPress={handleVerification}
           text="Continue"
           type="primary"

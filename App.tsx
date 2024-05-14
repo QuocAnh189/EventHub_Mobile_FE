@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { StatusBar } from 'react-native'
 
 //screen
-import { SplashScreen } from './src/screens';
+import { SplashScreen } from './src/screens'
 
 //navigator
-import { NavigationContainer } from '@react-navigation/native';
-import AppRouters from './src/navigators/AppRouters';
+import { NavigationContainer } from '@react-navigation/native'
+import AppRouters from './src/navigators/AppRouters'
 
 //font
-import { useFonts } from 'expo-font';
+import { useFonts } from 'expo-font'
 
 //redux
-import { Provider } from 'react-redux';
-import store from './src/redux/store';
+import { Provider } from 'react-redux'
+import store from './src/redux/store'
 
 const App = () => {
   useFonts({
@@ -23,16 +23,16 @@ const App = () => {
     AirbnbCereal_W_Lt: require('./assets/fonts/AirbnbCereal_W_Lt.otf'),
     AirbnbCereal_W_Md: require('./assets/fonts/AirbnbCereal_W_Md.otf'),
     AirbnbCereal_W_XBd: require('./assets/fonts/AirbnbCereal_W_XBd.otf'),
-  });
-  const [isShowSplash, setIsShowSplash] = useState(true);
+  })
+  const [isShowSplash, setIsShowSplash] = useState(true)
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setIsShowSplash(false);
-    }, 3000);
+      setIsShowSplash(false)
+    }, 3000)
 
-    return () => clearTimeout(timeout);
-  }, []);
+    return () => clearTimeout(timeout)
+  }, [])
 
   return (
     <Provider store={store}>
@@ -45,7 +45,7 @@ const App = () => {
         </NavigationContainer>
       )}
     </Provider>
-  );
-};
+  )
+}
 
-export default App;
+export default App

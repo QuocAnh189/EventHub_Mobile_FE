@@ -1,16 +1,15 @@
-import { Gender, UserStatus } from 'interfaces/constants/enum'
-
+import { EGender, EUserStatus } from '../../constants/enum'
 export interface IUser {
-  id: string
+  id?: string
   userName: string
   email: string
   phoneNumber: number
-  dob: Date
+  dob: any
   fullName: string
-  gender: Gender
+  gender: EGender
   bio: string
   avatar: string
-  status: UserStatus
+  status: EUserStatus
   numberOfFollowers: number
   numberOfFolloweds: number
   numberOfFavourites: number

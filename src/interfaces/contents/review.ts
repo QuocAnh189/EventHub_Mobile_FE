@@ -1,7 +1,7 @@
 export interface IReview {
   id: string
   userId: string
-  userName: string
+  fullName: string
   userAvatar: string
   eventId: string
   eventName: string

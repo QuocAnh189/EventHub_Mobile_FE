@@ -9,7 +9,7 @@ import { TextComponent } from './TextComponent'
 
 interface Props {
   isLoading: boolean
-  values: number
+  values?: number
   mess?: string
 }
 
